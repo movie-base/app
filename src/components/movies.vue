@@ -1,23 +1,44 @@
 <template>
     <div class="container">
-        <p class="title">Watched Movie <button class="btn btn-light ">Add Movie</button></p>
-        <div class="card-deck ">
-            <div v-for="movie in watchedMovieList" class="card resize" :key="movie">
+        <div v-if="watchedPopup">
+            <div class="popup-background" @click="reset()"></div>
+            <div class="popup">
+                <p>Add a movie that you have watched</p>
+                <input class="form-control" placeholder="movie name">
+                <button class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+        <p class="title">Watched Movie <button class="btn btn-light " @click="addWatched()">Add Movie</button>
+            <button class="btn btn-danger leave" @click.prevent="logout">Log out</button></p>
+        <div class="card-deck">
+            <div v-for="movie in watchedMovieList" class="card resize" >
                 <img class="card-img-top" style="" v-bind:src="movie.image" >
                 <div class="'card-body">
                     <p class="card-text">{{movie.name}}</p>
                     <div class="btn-group" role="group" aria-label="Basic example">
-                        <button type="button" class="btn btn-success">like</button>
-                        <button type="button" class="btn btn-danger">dislike</button>
+                        <button type="button" class="btn btn-success"><i class="material-icons">
+                            thumb_up
+                        </i></button>
+                        <button type="button" class="btn btn-danger"><i class="material-icons">
+                            thumb_down
+                        </i></button>
                     </div>
                 </div>
             </div>
         </div>
 
+        <div v-if="toWatchPopup">
+            <div class="popup-background" @click="reset()"></div>
+            <div class="popup">
+                <p>Add a movie that you want to watch</p>
+                <input class="form-control" placeholder="movie name">
+                <button class="btn btn-primary">Submit</button>
+            </div>
+        </div>
 
-        <p class="title">To Watch Movie <button class="btn btn-light ">Add Movie</button></p>
+        <p class="title">To Watch Movie <button class="btn btn-light" @click="addtoWatch()">Add Movie</button></p>
         <div class="card-deck ">
-            <div v-for="movie in toWatchMovieList" class="card resize" :key="movie">
+            <div v-for="movie in toWatchMovieList" class="card resize" >
                 <img class="card-img-top" style="" v-bind:src="movie.image" >
                 <div class="'card-body">
                     <p class="card-text">{{movie.name}}</p>
@@ -28,21 +49,26 @@
 
         <p class="title">Recommended Movie</p>
         <div class="card-deck ">
-            <div v-for="movie in recommendedList" class="card resize" :key="movie">
+            <div v-for="movie in recommendedList" class="card resize" >
                 <img class="card-img-top" style="" v-bind:src="movie.image" >
                 <div class="'card-body">
                     <p class="card-text">{{movie.name}}</p>
                 </div>
             </div>
         </div>
+        <footer class="blockquote-footer footer">Copyright 420 Server On Fire</footer>
     </div>
 </template>
 /* eslint-disable */
 <script>
+    import auth from '../auth'
+
     export default {
         name: "movies",
         data() {
             return {
+                watchedPopup: false,
+                toWatchPopup: false,
                 watchedMovieList: [
                     {name: 'Safe', image: 'https://images-na.ssl-images-amazon.com/images/M/MV5BODliOWEzMTUtZDQ5ZS00ZTBmLTgzNzEtMGVkOTlhYWNkYjE2XkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_UX182_CR0,0,182,268_AL_.jpg'},
                     {name: 'Desperado', image: 'https://images-na.ssl-images-amazon.com/images/M/MV5BYjA0NDMyYTgtMDgxOC00NGE0LWJkOTQtNDRjMjEzZmU0ZTQ3XkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_UX182_CR0,0,182,268_AL_.jpg'}
@@ -54,6 +80,22 @@
                 recommendedList: [
                     {name: 'The Cure', image: 'https://images-na.ssl-images-amazon.com/images/M/MV5BNTcyMDM2NjkzOF5BMl5BanBnXkFtZTcwNzg0MDcyMQ@@._V1_UY268_CR3,0,182,268_AL_.jpg'}
                 ]
+            }
+        },
+        methods: {
+            logout: function (){
+                localStorage.removeItem('user-token');
+                this.$router.replace({ name: "login" });
+            },
+            addWatched: function () {
+                this.watchedPopup = !this.watchedPopup;
+            },
+            addtoWatch: function() {
+                this.toWatchPopup = !this.toWatchPopup;
+            },
+            reset: function() {
+                this.watchedPopup = false;
+                this.toWatchPopup = false;
             }
         }
     }
@@ -69,7 +111,37 @@
 .resize {
     max-width: 200px;
 }
-    .add {
-        text-align: right;
+    .leave {
+        position: absolute;
+        right: 60px;
+    }
+    .footer {
+        margin-top: 30px;
+        margin-bottom: 20px;
+    }
+    .popup-background {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #333;
+        filter: alpha(opacity=80);
+        opacity: 0.8;
+        z-index: 100;
+    }
+    .popup {
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #FFFFFF;
+        width: 90%;
+        max-width: 700px;
+        padding: 30px;
+        border: 2px solid #000;
+        font-size: 1.21em;
+        line-height: 1.6em;
+        z-index: 101;
     }
 </style>
