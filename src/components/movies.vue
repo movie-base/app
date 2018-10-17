@@ -1,6 +1,5 @@
 <template>
     <div class="container">
-        <button @click.prevent="getMovies()" class="btn btn-lg btn-primary btn-block">Get Movies</button>
         <div v-if="watchedPopup">
             <div class="popup-background" @click="reset()"></div>
             <div class="popup">
