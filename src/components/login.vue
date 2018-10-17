@@ -26,8 +26,10 @@
             login: function(username, passwd){
                 // console.log(username, passwd);
                 this.axios.post('http://45.63.27.74:8080/auth', {
-                    "email": "admin@moviebase.local",
-                    "password": "moviebase"
+                    // "email": "admin@moviebase.local",
+                    // "password": "moviebase"
+                    "email": username,
+                    "password": passwd
                 }).then((response) => {
                     // console.log(response.status)
                     // console.log(response.data)

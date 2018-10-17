@@ -14,12 +14,12 @@ export default {
     loggedIn () {
         // return !!localStorage.token
         let token = localStorage.getItem('user-token');
-        console.log(token);
+        // console.log(token);
         if (token != null) {
-            console.log('true')
+            // console.log('true')
             return true;
         }
-        console.log('false')
+        // console.log('false')
         return false;
     }
 }
