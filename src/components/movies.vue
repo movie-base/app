@@ -11,9 +11,9 @@
         <p class="title">Watched Movie <button class="btn btn-light " @click="addWatched()">Add Movie</button>
             <button class="btn btn-danger leave" @click.prevent="logout">Log out</button></p>
         <div class="card-deck">
-            <div v-for="movie in watchedMovieList" class="card resize" >
+            <div v-for="movie in watchedMovieList" class="card" >
                 <img class="card-img-top" style="" v-bind:src="movie.image" >
-                <div class="'card-body">
+                <div class="card-body">
                     <p class="card-text">{{movie.name}}</p>
                     <div class="btn-group sticky-bottom" role="group" aria-label="Basic example">
                         <button type="button" class="btn btn-success"><i class="material-icons">
@@ -37,7 +37,7 @@
         </div>
 
         <p class="title">To Watch Movie <button class="btn btn-light" @click="addtoWatch()">Add Movie</button></p>
-        <div class="card-deck ">
+        <div class="card-deck resize">
             <div v-for="movie in toWatchMovieList" class="card resize" >
                 <img class="card-img-top" style="" v-bind:src="movie.image" >
                 <div class="'card-body">
@@ -48,7 +48,7 @@
 
 
         <p class="title">Recommended Movie</p>
-        <div class="card-deck ">
+        <div class="card-deck resize">
             <div v-for="movie in recommendedList" class="card resize" >
                 <img class="card-img-top" style="" v-bind:src="movie.image" >
                 <div class="'card-body">
@@ -61,8 +61,7 @@
 </template>
 /* eslint-disable */
 <script>
-    import auth from '../auth'
-
+import auth from '../auth';
     export default {
         name: "movies",
         data() {
@@ -159,49 +158,70 @@
 </script>
 
 <style scoped>
-    .title{
-        text-align: left;
-        font-weight: bold;
-        font-size: 20px;
-        margin-top: 30px;
-    }
-.resize {
-    max-width: 200px;
+.title {
+  text-align: left;
+  font-weight: bold;
+  font-size: 20px;
+  margin-top: 30px;
 }
+.resize {
+  height: 300px;
+}
+.leave {
+  position: absolute;
+  right: 60px;
+}
+.footer {
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
+.popup-background {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #333;
+  filter: alpha(opacity=80);
+  opacity: 0.8;
+  z-index: 100;
+}
+.popup {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #ffffff;
+  width: 90%;
+  max-width: 700px;
+  padding: 30px;
+  border: 2px solid #000;
+  font-size: 1.21em;
+  line-height: 1.6em;
+  z-index: 101;
+}
+.card-deck {
+  display: flex;
+  /* flex-direction: row; */
+  flex-wrap: nowrap;
+  min-width: 100%;
+  min-height: 350px;
+  overflow-x: auto;
+  /* overflow-y: hidden; */
+}
+.card {
+  display: inline-block;
+  flex-grow: 0;
+  margin: 5px;
+  min-width: 200px;
+  max-height: 400px;
+  max-width: 200px;
+}
+.card::-webkit-scrollbar {
+  display: none;
+}
+
 .sticky-bottom {
 
 }
-    .leave {
-        position: absolute;
-        right: 60px;
-    }
-    .footer {
-        margin-top: 30px;
-        margin-bottom: 20px;
-    }
-    .popup-background {
-        position: fixed;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background-color: #333;
-        filter: alpha(opacity=80);
-        opacity: 0.8;
-        z-index: 100;
-    }
-    .popup {
-        position: fixed;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-        background-color: #FFFFFF;
-        width: 90%;
-        max-width: 700px;
-        padding: 30px;
-        border: 2px solid #000;
-        font-size: 1.21em;
-        line-height: 1.6em;
-        z-index: 101;
-    }
 </style>
