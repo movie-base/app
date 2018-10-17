@@ -1,5 +1,6 @@
 <template>
     <div class="container">
+        <button @click.prevent="getMovies()" class="btn btn-lg btn-primary btn-block">Get Movies</button>
         <div v-if="watchedPopup">
             <div class="popup-background" @click="reset()"></div>
             <div class="popup">
@@ -11,9 +12,9 @@
         <p class="title">Watched Movie <button class="btn btn-light " @click="addWatched()">Add Movie</button>
             <button class="btn btn-danger leave" @click.prevent="logout">Log out</button></p>
         <div class="card-deck">
-            <div v-for="movie in watchedMovieList" class="card resize" >
+            <div v-for="movie in watchedMovieList" class="card" >
                 <img class="card-img-top" style="" v-bind:src="movie.image" >
-                <div class="'card-body">
+                <div class="card-body">
                     <p class="card-text">{{movie.name}}</p>
                     <div class="btn-group" role="group" aria-label="Basic example">
                         <button type="button" class="btn btn-success"><i class="material-icons">
@@ -37,7 +38,7 @@
         </div>
 
         <p class="title">To Watch Movie <button class="btn btn-light" @click="addtoWatch()">Add Movie</button></p>
-        <div class="card-deck ">
+        <div class="card-deck resize">
             <div v-for="movie in toWatchMovieList" class="card resize" >
                 <img class="card-img-top" style="" v-bind:src="movie.image" >
                 <div class="'card-body">
@@ -48,7 +49,7 @@
 
 
         <p class="title">Recommended Movie</p>
-        <div class="card-deck ">
+        <div class="card-deck resize">
             <div v-for="movie in recommendedList" class="card resize" >
                 <img class="card-img-top" style="" v-bind:src="movie.image" >
                 <div class="'card-body">
@@ -61,87 +62,172 @@
 </template>
 /* eslint-disable */
 <script>
-    import auth from '../auth'
+import auth from '../auth';
 
-    export default {
-        name: "movies",
-        data() {
-            return {
-                watchedPopup: false,
-                toWatchPopup: false,
-                watchedMovieList: [
-                    {name: 'Safe', image: 'https://images-na.ssl-images-amazon.com/images/M/MV5BODliOWEzMTUtZDQ5ZS00ZTBmLTgzNzEtMGVkOTlhYWNkYjE2XkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_UX182_CR0,0,182,268_AL_.jpg'},
-                    {name: 'Desperado', image: 'https://images-na.ssl-images-amazon.com/images/M/MV5BYjA0NDMyYTgtMDgxOC00NGE0LWJkOTQtNDRjMjEzZmU0ZTQ3XkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_UX182_CR0,0,182,268_AL_.jpg'}
-                ],
-                toWatchMovieList: [
-                    {name: 'Before the Rain ', image: 'https://images-na.ssl-images-amazon.com/images/M/MV5BMTM3MzAwMzc1N15BMl5BanBnXkFtZTcwMjA4NjA3MQ@@._V1_UY268_CR5,0,182,268_AL_.jpg'},
-                    {name: 'Before Sunrise ', image: 'https://images-na.ssl-images-amazon.com/images/M/MV5BZDdiZTAwYzAtMDI3Ni00OTRjLTkzN2UtMGE3MDMyZmU4NTU4XkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_UX182_CR0,0,182,268_AL_.jpg'},
-                ],
-                recommendedList: [
-                    {name: 'The Cure', image: 'https://images-na.ssl-images-amazon.com/images/M/MV5BNTcyMDM2NjkzOF5BMl5BanBnXkFtZTcwNzg0MDcyMQ@@._V1_UY268_CR3,0,182,268_AL_.jpg'}
-                ]
-            }
+export default {
+  name: 'movies',
+  data() {
+    return {
+      watchedPopup: false,
+      toWatchPopup: false,
+      watchedMovieList: [
+        {
+          name: 'Safe',
+          image:
+            'https://images-na.ssl-images-amazon.com/images/M/MV5BODliOWEzMTUtZDQ5ZS00ZTBmLTgzNzEtMGVkOTlhYWNkYjE2XkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_UX182_CR0,0,182,268_AL_.jpg',
         },
-        methods: {
-            logout: function (){
-                localStorage.removeItem('user-token');
-                this.$router.replace({ name: "login" });
-            },
-            addWatched: function () {
-                this.watchedPopup = !this.watchedPopup;
-            },
-            addtoWatch: function() {
-                this.toWatchPopup = !this.toWatchPopup;
-            },
-            reset: function() {
-                this.watchedPopup = false;
-                this.toWatchPopup = false;
-            }
-        }
-    }
+        {
+          name: 'Desperado',
+          image:
+            'https://images-na.ssl-images-amazon.com/images/M/MV5BYjA0NDMyYTgtMDgxOC00NGE0LWJkOTQtNDRjMjEzZmU0ZTQ3XkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_UX182_CR0,0,182,268_AL_.jpg',
+        },
+        {
+          name: 'Safe',
+          image:
+            'https://images-na.ssl-images-amazon.com/images/M/MV5BODliOWEzMTUtZDQ5ZS00ZTBmLTgzNzEtMGVkOTlhYWNkYjE2XkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_UX182_CR0,0,182,268_AL_.jpg',
+        },
+        {
+          name: 'Desperado',
+          image:
+            'https://images-na.ssl-images-amazon.com/images/M/MV5BYjA0NDMyYTgtMDgxOC00NGE0LWJkOTQtNDRjMjEzZmU0ZTQ3XkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_UX182_CR0,0,182,268_AL_.jpg',
+        },
+        {
+          name: 'Safe',
+          image:
+            'https://images-na.ssl-images-amazon.com/images/M/MV5BODliOWEzMTUtZDQ5ZS00ZTBmLTgzNzEtMGVkOTlhYWNkYjE2XkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_UX182_CR0,0,182,268_AL_.jpg',
+        },
+        {
+          name: 'Desperado',
+          image:
+            'https://images-na.ssl-images-amazon.com/images/M/MV5BYjA0NDMyYTgtMDgxOC00NGE0LWJkOTQtNDRjMjEzZmU0ZTQ3XkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_UX182_CR0,0,182,268_AL_.jpg',
+        },
+        {
+          name: 'Safe',
+          image:
+            'https://images-na.ssl-images-amazon.com/images/M/MV5BODliOWEzMTUtZDQ5ZS00ZTBmLTgzNzEtMGVkOTlhYWNkYjE2XkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_UX182_CR0,0,182,268_AL_.jpg',
+        },
+        {
+          name: 'Desperado',
+          image:
+            'https://images-na.ssl-images-amazon.com/images/M/MV5BYjA0NDMyYTgtMDgxOC00NGE0LWJkOTQtNDRjMjEzZmU0ZTQ3XkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_UX182_CR0,0,182,268_AL_.jpg',
+        },
+      ],
+      toWatchMovieList: [
+        {
+          name: 'Before the Rain ',
+          image:
+            'https://images-na.ssl-images-amazon.com/images/M/MV5BMTM3MzAwMzc1N15BMl5BanBnXkFtZTcwMjA4NjA3MQ@@._V1_UY268_CR5,0,182,268_AL_.jpg',
+        },
+        {
+          name: 'Before Sunrise ',
+          image:
+            'https://images-na.ssl-images-amazon.com/images/M/MV5BZDdiZTAwYzAtMDI3Ni00OTRjLTkzN2UtMGE3MDMyZmU4NTU4XkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_UX182_CR0,0,182,268_AL_.jpg',
+        },
+      ],
+      recommendedList: [
+        {
+          name: 'The Cure',
+          image:
+            'https://images-na.ssl-images-amazon.com/images/M/MV5BNTcyMDM2NjkzOF5BMl5BanBnXkFtZTcwNzg0MDcyMQ@@._V1_UY268_CR3,0,182,268_AL_.jpg',
+        },
+      ],
+    };
+  },
+  methods: {
+    logout: function() {
+      localStorage.removeItem('user-token');
+      this.$router.replace({ name: 'login' });
+    },
+    getMovies: function() {
+      this.axios
+        .get('http://45.63.27.74:8080/movies', {
+          access_token: localStorage.getItem('user-token'),
+        })
+        .then(response => {
+          console.log(response.data);
+        })
+        .catch(error => {
+          console.log('api error:' + error);
+          this.errors = [];
+          error.response.data.forEach(e => this.errors.push(e));
+          throw error;
+        });
+    },
+    addWatched: function() {
+      this.watchedPopup = !this.watchedPopup;
+    },
+    addtoWatch: function() {
+      this.toWatchPopup = !this.toWatchPopup;
+    },
+    reset: function() {
+      this.watchedPopup = false;
+      this.toWatchPopup = false;
+    },
+  },
+};
 </script>
 
 <style scoped>
-    .title{
-        text-align: left;
-        font-weight: bold;
-        font-size: 20px;
-        margin-top: 30px;
-    }
-.resize {
-    max-width: 200px;
+.title {
+  text-align: left;
+  font-weight: bold;
+  font-size: 20px;
+  margin-top: 30px;
 }
-    .leave {
-        position: absolute;
-        right: 60px;
-    }
-    .footer {
-        margin-top: 30px;
-        margin-bottom: 20px;
-    }
-    .popup-background {
-        position: fixed;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background-color: #333;
-        filter: alpha(opacity=80);
-        opacity: 0.8;
-        z-index: 100;
-    }
-    .popup {
-        position: fixed;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-        background-color: #FFFFFF;
-        width: 90%;
-        max-width: 700px;
-        padding: 30px;
-        border: 2px solid #000;
-        font-size: 1.21em;
-        line-height: 1.6em;
-        z-index: 101;
-    }
+.resize {
+  height: 300px;
+}
+.leave {
+  position: absolute;
+  right: 60px;
+}
+.footer {
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
+.popup-background {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #333;
+  filter: alpha(opacity=80);
+  opacity: 0.8;
+  z-index: 100;
+}
+.popup {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #ffffff;
+  width: 90%;
+  max-width: 700px;
+  padding: 30px;
+  border: 2px solid #000;
+  font-size: 1.21em;
+  line-height: 1.6em;
+  z-index: 101;
+}
+.card-deck {
+  display: flex;
+  /* flex-direction: row; */
+  flex-wrap: nowrap;
+  min-width: 100%;
+  min-height: 350px;
+  overflow-x: auto;
+  /* overflow-y: hidden; */
+}
+.card {
+  display: inline-block;
+  flex-grow: 0;
+  margin: 5px;
+  min-width: 200px;
+  max-height: 400px;
+  max-width: 200px;
+}
+.card::-webkit-scrollbar {
+  display: none;
+}
 </style>

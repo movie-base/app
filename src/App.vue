@@ -12,29 +12,29 @@
 
 <script>
 // import HelloWorld from './components/HelloWorld.vue'
-import login from './components/login.vue'
-import movies from './components/movies.vue'
-import auth from './auth'
+import login from './components/login.vue';
+import movies from './components/movies.vue';
+import auth from './auth';
 
 export default {
   name: 'app',
-    data () {
-        return {
-            loggedIn: auth.loggedIn()
-        }
-    },
+  data() {
+    return {
+      loggedIn: auth.loggedIn(),
+    };
+  },
   components: {
     // HelloWorld
-      login,
-      movies
-  }
-}
+    login,
+    movies,
+  },
+};
 </script>
 
 
 <style>
-  @import './assets/bootstrap.min.css';
-  @import "https://fonts.googleapis.com/icon?family=Material+Icons";
+@import './assets/bootstrap.min.css';
+@import 'https://fonts.googleapis.com/icon?family=Material+Icons';
 
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
@@ -43,5 +43,19 @@ export default {
   text-align: center;
   color: #2c3e50;
   /*margin-top: 60px;*/
+}
+
+#html,
+#body {
+  width: 100%;
+  height: 100%;
+}
+
+#body {
+  background-color: #8e44ad;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>
