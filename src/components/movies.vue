@@ -15,7 +15,7 @@
             <div v-for="movie in watchedMovieList" class="card" >
                 <img class="card-img-top" style="" v-bind:src="movie.image" >
                 <div class="card-body">
-                    <p class="card-text">{{movie.name}}</p>
+                    <p class="card-text ellipsis">{{movie.name}}</p>
                     <div class="btn-group" role="group" aria-label="Basic example">
                         <button type="button" class="btn btn-success"><i class="material-icons">
                             thumb_up
@@ -42,7 +42,7 @@
             <div v-for="movie in toWatchMovieList" class="card resize" >
                 <img class="card-img-top" style="" v-bind:src="movie.image" >
                 <div class="'card-body">
-                    <p class="card-text">{{movie.name}}</p>
+                    <p class="card-text ellipsis">{{movie.name}}</p>
                 </div>
             </div>
         </div>
@@ -53,7 +53,7 @@
             <div v-for="movie in recommendedList" class="card resize" >
                 <img class="card-img-top" style="" v-bind:src="movie.image" >
                 <div class="'card-body">
-                    <p class="card-text">{{movie.name}}</p>
+                    <p class="card-text ellipsis">{{movie.name}}</p>
                 </div>
             </div>
         </div>
@@ -212,12 +212,10 @@ export default {
 }
 .card-deck {
   display: flex;
-  /* flex-direction: row; */
   flex-wrap: nowrap;
   min-width: 100%;
   min-height: 350px;
   overflow-x: auto;
-  /* overflow-y: hidden; */
 }
 .card {
   display: inline-block;
@@ -229,5 +227,15 @@ export default {
 }
 .card::-webkit-scrollbar {
   display: none;
+}
+
+.ellipsis {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  height: 25px;
+  line-height: 25px;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
 }
 </style>
