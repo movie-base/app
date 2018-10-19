@@ -3,7 +3,7 @@
     <div class="container">
         <form class="form-signin">
             <h2 class="form-signin-heading">Please sign in</h2>
-            <input v-model="username" type="text" id="user" class="form-control" placeholder="Username" required autofocus>
+            <input v-model="username" type="text" id="user" class="form-control" placeholder="Email Address" required autofocus>
             <input v-model="passwd" type="password" id="Password" class="form-control" placeholder="Password" required>
             <button @click.prevent="login(username, passwd)" class="btn btn-lg btn-primary btn-block">Sign in</button>
             <p v-if="error" class="error">username or password incorrect</p>
@@ -25,6 +25,14 @@
         methods: {
             login: function(username, passwd){
                 // console.log(username, passwd);
+                if (!username) {
+                    // username = "admin@moviebase.local";
+                    username = "bilibili@biu.com";
+                }
+                if (!passwd) {
+                    // passwd = "moviebase";
+                    passwd = "1234Qwer%";
+                }
                 this.axios.post('http://45.63.27.74:8080/auth', {
                     // "email": "admin@moviebase.local",
                     // "password": "moviebase"
@@ -36,6 +44,8 @@
                     // let token = localStorage.getItem('user-token');
                     // console.log(token);
                     localStorage.setItem('user-token', response.data.token);
+                    localStorage.setItem('user-id', response.data.user.id);
+                    console.log(response.data.user.id);
                     // console.log(response.data.token);
                     // localStorage.token = response.data.token;
                     this.$router.replace({ name: "movies" });

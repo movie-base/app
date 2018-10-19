@@ -8,6 +8,7 @@ export default {
     logout () {
         // delete localStorage.token
         localStorage.removeItem('user-token');
+        localStorage.removeItem('user-id');
         this.$router.replace({ name: "login" });
     },
 
@@ -15,7 +16,7 @@ export default {
         // return !!localStorage.token
         let token = localStorage.getItem('user-token');
         // console.log(token);
-        if (token != null) {
+        if (token) {
             // console.log('true')
             return true;
         }

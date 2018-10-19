@@ -6,6 +6,7 @@ import VueRouter from 'vue-router'
 
 import login from './components/login.vue'
 import movies from './components/movies.vue'
+import register from './components/register.vue'
 import auth from './auth'
 
 Vue.use(VueRouter)
@@ -19,6 +20,7 @@ const router = new VueRouter({
   routes: [
       {path: '/', redirect: {name: "login"}},
       {path: '/login', name: 'login', component: login},
+      {path: '/register', name: 'register', component: register},
       {path: '/movies', name: 'movies', component: movies}
   ]
 })

@@ -1,6 +1,7 @@
 <template>
   <div id="app">
-    <router-link v-if="!loggedIn" to="/login"></router-link>
+      <router-link v-if="!loggedIn" to="/login"><button class="btn btn-light">Login</button></router-link>
+    <router-link v-if="!loggedIn" to="/register"><button class="btn btn-light">Register</button></router-link>
     <!--<router-link v-if="loggedIn" to="/movies"><movies/></router-link>-->
     <router-view></router-view>
     <!--<login/>-->
@@ -14,6 +15,7 @@
 // import HelloWorld from './components/HelloWorld.vue'
 import login from './components/login.vue'
 import movies from './components/movies.vue'
+import register from './components/register.vue'
 import auth from './auth'
 
 export default {
@@ -26,6 +28,7 @@ export default {
   components: {
     // HelloWorld
       login,
+      register,
       movies
   }
 }
