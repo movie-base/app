@@ -4,7 +4,14 @@
             <div class="popup-background" @click="reset()"></div>
             <div class="popup">
                 <p>Add a movie that you have watched</p>
-                <input class="form-control" placeholder="movie name" v-model="newMovie" @keyup="search" @keyup.enter="submitWatched">
+                <div class="form-row">
+                    <div class="col-9">
+                    <input class="form-control" placeholder="movie name" v-model="newMovie" @keyup="search" @keyup.enter="submitWatched">
+                    </div>
+                    <div class="col-1">
+                    <button class="btn btn-primary" @click="submitWatched">submit</button>
+                    </div>
+                </div>
                 <div class="prompt" v-if="showSuggestion">
                     <p class="choice" v-for="movie in watchedSuggestion" @click="select(movie)">{{movie.title}} ({{movie.year}})</p>
                 </div>
@@ -53,7 +60,14 @@
             <div class="popup-background" @click="reset()"></div>
             <div class="popup">
                 <p>Add a movie that you want to watch</p>
-                <input class="form-control" placeholder="movie name" v-model="newMovie" @keyup="search" @keyup.enter="submitToWatch">
+                <div class="form-row">
+                    <div class="col-9">
+                    <input class="form-control" placeholder="movie name" v-model="newMovie" @keyup="search" @keyup.enter="submitToWatch">
+                    </div>
+                    <div class="col-1">
+                        <button class="btn btn-primary" @click="submitToWatch">submit</button>
+                    </div>
+                </div>
                 <div class="prompt" v-if="showSuggestion">
                     <p class="choice" v-for="movie in watchedSuggestion" @click="select(movie)">{{movie.title}} ({{movie.year}})</p>
                 </div>
@@ -394,6 +408,7 @@
                         }
                     });
                 });
+                this.reset();
             },
             submitToWatch: function(newMovie) {
                 // console.log('enter', this.newMovie);
@@ -441,7 +456,7 @@
                             }
                         });
                 });
-
+                this.reset();
             },
             select: function (newMovie) {
                 this.newMovie = newMovie.title;
