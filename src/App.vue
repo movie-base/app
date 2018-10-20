@@ -1,7 +1,7 @@
 <template>
   <div id="app">
       <router-link v-if="!loggedIn" to="/login"><button class="btn btn-light">Login</button></router-link>
-    <router-link v-if="!loggedIn" to="/register"><button class="btn btn-light">Register</button></router-link>
+    <!--<router-link v-if="!loggedIn" to="/register"><button class="btn btn-light">Register</button></router-link>-->
     <!--<router-link v-if="loggedIn" to="/movies"><movies/></router-link>-->
     <router-view></router-view>
     <!--<login/>-->
@@ -28,7 +28,7 @@ export default {
   components: {
     // HelloWorld
       login,
-      register,
+      // register,
       movies
   }
 }

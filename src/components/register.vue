@@ -37,7 +37,7 @@
                 })
                     .then(res => {
                         console.log(res);
-                        this.$router.replace({ name: "login" });
+                        // this.$router.replace({ name: "login" });
                     })
             }
         }

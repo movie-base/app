@@ -1,12 +1,22 @@
 
 <template>
     <div class="container">
-        <form class="form-signin">
+        <button class="btn btn-light" @click="switchLogin">Login</button><button class="btn btn-light" @click="switchReg">Register</button>
+        <form class="form-signin" v-if="showLogin">
             <h2 class="form-signin-heading">Please sign in</h2>
             <input v-model="username" type="text" id="user" class="form-control" placeholder="Email Address" required autofocus>
             <input v-model="passwd" type="password" id="Password" class="form-control" placeholder="Password" required>
             <button @click.prevent="login(username, passwd)" class="btn btn-lg btn-primary btn-block">Sign in</button>
             <p v-if="error" class="error">username or password incorrect</p>
+        </form>
+        <form class="form-signin" v-if="!showLogin">
+            <h2 class="form-signin-heading">Please register</h2>
+            <input v-model="email" type="text" id="email" class="form-control" placeholder="Email Address" required autofocus>
+            <input v-model="name" type="text" id="name" class="form-control" placeholder="Name" required>
+            <input v-model="passwd" type="password" id="Passwd" class="form-control" placeholder="Password" required>
+            <button @click.prevent="register(email, passwd, name)" class="btn btn-lg btn-primary btn-block">register</button>
+            <!--<p v-if="nothing" class="error">Please enter something</p>-->
+            <p v-if="error" class="error">{{msg}}</p>
         </form>
     </div>
 </template>
@@ -19,12 +29,21 @@
             return {
                 username:'',
                 passwd:'',
-                error: false
+                email: '',
+                name: '',
+                msg: '',
+                error: false,
+                showLogin: true
             }
         },
         methods: {
+            switchLogin: function() {
+                this.showLogin = true;
+            },
+            switchReg: function() {
+                this.showLogin = false;
+            },
             login: function(username, passwd){
-                // console.log(username, passwd);
                 if (!username) {
                     // username = "admin@moviebase.local";
                     username = "bilibili@biu.com";
@@ -46,14 +65,33 @@
                     localStorage.setItem('user-token', response.data.token);
                     localStorage.setItem('user-id', response.data.user.id);
                     console.log(response.data.user.id);
-                    // console.log(response.data.token);
-                    // localStorage.token = response.data.token;
                     this.$router.replace({ name: "movies" });
                 }).catch(error => {
                     console.log("api error:" + error);
                     this.error = true;
                     throw error;
                 })
+            },
+            register: function (email, passwd, name) {
+                if (!email || !passwd || !name) {
+                    this.error = true;
+                    this.msg = 'Please enter something';
+                    return false;
+                }
+                this.axios.post('http://45.63.27.74:8080/users', {
+                    "email": email,
+                    'name': name,
+                    "password": passwd
+                })
+                    .then(res => {
+                        console.log(res);
+                        this.login = true;
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        this.error = true;
+                        this.msg = 'Already Exists or Password too Simple';
+                    })
             }
         }
     }

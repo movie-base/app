@@ -8,7 +8,7 @@
                 <div class="prompt" v-if="showSuggestion">
                     <p class="choice" v-for="movie in watchedSuggestion" @click="select(movie)">{{movie.title}} ({{movie.year}})</p>
                 </div>
-                <div class="selected" v-if="showSelected">
+                <div class="selected scrollbar-cyan thin" v-if="showSelected">
                     <div class="selectedTitle">
                         <h5>{{selectedMovie.title}}</h5>
                         <button type="button" class="btn btn-success" :class="{ disabled: LikeorNot }" @click="clickLike()"><i class="material-icons">
@@ -21,7 +21,7 @@
                     </div>
                     <p>{{selectedMovie.plot}}</p>
                     <p>Actors: <span v-for="actor in selectedMovie.actors">{{actor}}  </span></p>
-                    <!--<img :src="selectedMovie.poster">-->
+                    <img :src="selectedMovie.poster">
                 </div>
                 <p v-if="showWarning" class="error">{{warningMsg}}</p>
                 <!--<button class="btn btn-primary">Submit</button>-->
@@ -57,14 +57,14 @@
                 <div class="prompt" v-if="showSuggestion">
                     <p class="choice" v-for="movie in watchedSuggestion" @click="select(movie)">{{movie.title}} ({{movie.year}})</p>
                 </div>
-                <div class="selected" v-if="showSelected">
+                <div class="selected scrollbar-cyan thin" v-if="showSelected">
                     <div class="selectedTitle">
                         <h5>{{selectedMovie.title}}</h5>
                         <div class="rating">{{selectedMovie.imdbRating}}</div>
                     </div>
                     <p>{{selectedMovie.plot}}</p>
                     <p>Actors: <span v-for="actor in selectedMovie.actors">{{actor}}  </span></p>
-                    <!--<img :src="selectedMovie.poster">-->
+                    <img :src="selectedMovie.poster">
                 </div>
                 <p v-if="showWarning" class="error">{{warningMsg}}</p>
                 <!--<button class="btn btn-primary">Submit</button>-->
@@ -84,10 +84,18 @@
             </div>
         </div>
 
+        <div v-if="recommendPopup">
+            <div class="popup-background" @click="reset()"></div>
+            <div class="popup scrollbar-cyan thin">
+                <p>{{recommendMovie.title}}</p>
+                <p>{{recommendMovie.plot}}</p>
+                <img :src="recommendMovie.poster">
+            </div>
+        </div>
 
         <p class="title">Recommended Movie</p>
         <div class="card-deck ">
-            <div v-for="movie in recommendedList" class="card resize cover-parent" @mouseover="showDescrip(movie)" @mouseleave="hideDescrip(movie)">
+            <div v-for="movie in recommendedList" class="card resize cover-parent" @click="showDescrip(movie)" >
                 <!--<p v-if="movie.descrip" class="cover">{{movie.plot}}</p>-->
                 <img class="card-img-top" style="" v-bind:src="movie.poster" >
                 <div class="'card-body">
@@ -108,6 +116,8 @@
             return {
                 watchedPopup: false,
                 toWatchPopup: false,
+                recommendPopup: false,
+                recommendMovie: {},
                 token: '',
                 user_id: '',
                 // movie_id: '',
@@ -238,15 +248,20 @@
                 this.showWarning = false;
                 this.showSelected = false;
                 this.LikeorNot = null;
+                this.recommendPopup = false;
             },
             showDescrip: function(movie) {
                 // console.log(movieDetail.plot)
                 // console.log('hover');
-                movie.descrip = true;
+                // movie.descrip = true;
+                this.recommendPopup = true;
+                this.recommendMovie.title = movie.title;
+                this.recommendMovie.plot = movie.plot;
+                this.recommendMovie.poster = movie.poster;
             },
-            hideDescrip: function(movie) {
-                movie.descrip = false;
-            },
+            // hideDescrip: function(movie) {
+            //     movie.descrip = false;
+            // },
             showIcon: function(movie) {
                 // console.log('over');
                 movie.icon = true;
@@ -495,11 +510,11 @@
             },
             clickLike: function() {
                 this.LikeorNot = true;
-                console.log(this.LikeorNot);
+                // console.log(this.LikeorNot);
             },
             clickDislike: function() {
                 this.LikeorNot = false;
-                console.log(this.LikeorNot);
+                // console.log(this.LikeorNot);
             }
         }
     }
@@ -549,6 +564,8 @@
         filter: alpha(opacity=80);
         opacity: 0.8;
         z-index: 100;
+
+
     }
     .popup {
         position: fixed;
@@ -563,7 +580,31 @@
         font-size: 1.21em;
         line-height: 1.6em;
         z-index: 101;
+
+        overflow-y: scroll;
+        max-height: 500px;
     }
+
+    .scrollbar-cyan::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+        background-color: #F5F5F5;
+        border-radius: 10px;
+    }
+
+    .scrollbar-cyan::-webkit-scrollbar {
+        width: 12px;
+        background-color: #F5F5F5;
+    }
+
+    .scrollbar-cyan::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+        background-color: #00bcd4;
+    }
+    .thin::-webkit-scrollbar {
+        width: 6px;
+    }
+
     .error {
         margin-top: 10px;
         color: red;
