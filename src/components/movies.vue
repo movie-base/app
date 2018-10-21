@@ -101,15 +101,18 @@
         <div v-if="recommendPopup">
             <div class="popup-background" @click="reset()"></div>
             <div class="popup scrollbar-cyan thin">
-                <p>{{recommendMovie.title}} ({{recommendMovie.year}})  {{recommendMovie.imdbRating}}</p>
+                <p>{{recommendMovie.title}} ({{recommendMovie.year}})  {{recommendMovie.runtime}} <i class="material-icons">
+                    stars
+                </i>{{recommendMovie.imdbRating}}</p>
+                <img :src="recommendMovie.poster">
                 <div class="detailed_context">
                 <p class="detailed_plot">{{recommendMovie.plot}}</p>
-                <p v-if="recommendMovie.genres"><b>Genres: </b><span v-for="genre in recommendMovie.genres">{{genre}},  </span></p>
-                <p v-if="recommendMovie.directors"><b>Directors: </b><span v-for="director in recommendMovie.directors">{{director}},  </span></p>
-                <p v-if="recommendMovie.actors"><b>Actors: </b><span v-for="actor in recommendMovie.actors">{{actor}},  </span></p>
-                <p v-if="recommendMovie.languages"><b>Languages: </b><span v-for="language in recommendMovie.languages">{{language}},  </span></p>
+                <p v-if="recommendMovie.genres"><b>Genres: </b>{{recommendMovie.genres.join(', ')}}</p>
+                <p v-if="recommendMovie.directors"><b>Directors: </b>{{recommendMovie.directors.join(', ')}}</p>
+                <p v-if="recommendMovie.actors"><b>Actors: </b>{{recommendMovie.actors.join(', ')}}</p>
+                <p v-if="recommendMovie.languages"><b>Languages: </b>{{recommendMovie.languages.join(', ')}}</p>
                 </div>
-                <img :src="recommendMovie.poster">
+
             </div>
         </div>
 
@@ -216,6 +219,7 @@
                             element.languages = record.movie.languages;
                             element.year = record.movie.year;
                             element.imdbRating = record.movie.imdbRating;
+                            element.runtime = record.movie.runtime;
 
                             element.icon = false;
                             element.like = record.hasLiked;
@@ -259,6 +263,7 @@
                     element.languages = movie.languages;
                     element.year = movie.year;
                     element.imdbRating = movie.imdbRating;
+                    element.runtime = movie.runtime;
 
                     element.descrip = false;
                     // element.icon = false;
@@ -325,10 +330,14 @@
                         this.axios.get(this.API + '/recommendations?limit=20'
                         ).then((response) => {
                             let movies = response.data.movies;
+                            // let recommendedList = [];
                             this.recommendedList = [];
+                            // this.toWatchMovieList = [];
+                            // this.watchedMovieList = [];
+                            // let cnt = 0
                             for (let movie of movies) {
                                 let element = {};
-                                if(!movie) {
+                                if (!movie) {
                                     continue;
                                 }
                                 // cnt++;
@@ -339,6 +348,13 @@
                                 element.poster = movie.poster;
                                 element.plot = movie.plot;
                                 element.genres = movie.genres;
+                                element.actors = movie.actors;
+                                element.directors = movie.directors;
+                                element.languages = movie.languages;
+                                element.year = movie.year;
+                                element.imdbRating = movie.imdbRating;
+                                element.runtime = movie.runtime;
+
                                 element.descrip = false;
                                 // element.icon = false;
                                 this.recommendedList.push(element);
@@ -356,12 +372,17 @@
                         this.axios.get(this.API + '/recommendations?limit=20'
                         ).then((response) => {
                             let movies = response.data.movies;
+                            // let recommendedList = [];
                             this.recommendedList = [];
+                            // this.toWatchMovieList = [];
+                            // this.watchedMovieList = [];
+                            // let cnt = 0
                             for (let movie of movies) {
                                 let element = {};
-                                if(!movie) {
+                                if (!movie) {
                                     continue;
                                 }
+                                // cnt++;
                                 if (!movie.title || !movie.poster){
                                     continue;
                                 }
@@ -369,6 +390,13 @@
                                 element.poster = movie.poster;
                                 element.plot = movie.plot;
                                 element.genres = movie.genres;
+                                element.actors = movie.actors;
+                                element.directors = movie.directors;
+                                element.languages = movie.languages;
+                                element.year = movie.year;
+                                element.imdbRating = movie.imdbRating;
+                                element.runtime = movie.runtime;
+
                                 element.descrip = false;
                                 // element.icon = false;
                                 this.recommendedList.push(element);
@@ -433,6 +461,13 @@
                         element.plot = res.data.movie.plot;
                         element.title = res.data.movie.title;
                         element.poster = res.data.movie.poster;
+                        element.genres = res.data.movie.genres;
+                        element.actors = res.data.movie.actors;
+                        element.directors = res.data.movie.directors;
+                        element.languages = res.data.movie.languages;
+                        element.imdbRating = res.data.movie.imdbRating;
+                        element.runtime = res.data.movie.runtime;
+
                         this.watchedMovieList.unshift(element);
                     }
 
@@ -454,6 +489,12 @@
                             element.poster = movie.poster;
                             element.plot = movie.plot;
                             element.genres = movie.genres;
+                            element.actors = movie.actors;
+                            element.directors = movie.directors;
+                            element.languages = movie.languages;
+                            element.year = movie.year;
+                            element.imdbRating = movie.imdbRating;
+                            element.runtime = movie.runtime;
                             element.descrip = false;
                             // element.icon = false;
                             this.recommendedList.push(element);
@@ -488,6 +529,12 @@
                             element.plot = res.data.movie.plot;
                             element.title = res.data.movie.title;
                             element.poster = res.data.movie.poster;
+                            element.genres = res.data.movie.genres;
+                            element.actors = res.data.movie.actors;
+                            element.directors = res.data.movie.directors;
+                            element.languages = res.data.movie.languages;
+                            element.imdbRating = res.data.movie.imdbRating;
+                            element.runtime = res.data.movie.runtime;
                             this.toWatchMovieList.unshift(element);
                         }
                         // this.axios.get('http://45.63.27.74:8080/recommendations?limit=20'
@@ -507,6 +554,12 @@
                                 element.poster = movie.poster;
                                 element.plot = movie.plot;
                                 element.genres = movie.genres;
+                                element.actors = movie.actors;
+                                element.directors = movie.directors;
+                                element.languages = movie.languages;
+                                element.year = movie.year;
+                                element.imdbRating = movie.imdbRating;
+                                element.runtime = movie.runtime;
                                 element.descrip = false;
                                 // element.icon = false;
                                 this.recommendedList.push(element);
@@ -549,6 +602,12 @@
                                 element.poster = movie.poster;
                                 element.plot = movie.plot;
                                 element.genres = movie.genres;
+                                element.actors = movie.actors;
+                                element.directors = movie.directors;
+                                element.languages = movie.languages;
+                                element.year = movie.year;
+                                element.imdbRating = movie.imdbRating;
+                                element.runtime = movie.runtime;
                                 element.descrip = false;
                                 // element.icon = false;
                                 this.recommendedList.push(element);
@@ -581,6 +640,12 @@
                             element.poster = movie.poster;
                             element.plot = movie.plot;
                             element.genres = movie.genres;
+                            element.actors = movie.actors;
+                            element.directors = movie.directors;
+                            element.languages = movie.languages;
+                            element.year = movie.year;
+                            element.imdbRating = movie.imdbRating;
+                            element.runtime = movie.runtime;
                             element.descrip = false;
                             // element.icon = false;
                             this.recommendedList.push(element);
