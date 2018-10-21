@@ -135,7 +135,7 @@
 </template>
 /* eslint-disable */
 <script>
-    import auth from '../auth'
+    // import auth from '../auth'
 
     export default {
         name: "movies",
@@ -180,12 +180,12 @@
             this.token = localStorage.getItem('user-token');
             this.user_id = localStorage.getItem('user-id');
             // console.log(this.token);
-            let config = {
-                headers: {'Authorization': "bearer " + this.token}
-            };
-            let bodyParameters = {
-                key: "value"
-            };
+            // let config = {
+            //     headers: {'Authorization': "bearer " + this.token}
+            // };
+            // let bodyParameters = {
+            //     key: "value"
+            // };
             this.axios.interceptors.request.use(
                 (config) => {
                     let token = localStorage.getItem('user-token');
@@ -202,7 +202,7 @@
             // this.axios.get('http://45.63.27.74:8080/interactions')
             this.axios.get(this.API + '/interactions?sort=-updatedAt&limit=100')
                 .then((response) => {
-                    console.log(response.data);
+                    // console.log(response.data);
                     for (let record of response.data) {
                         let element = {};
                         if (!record.movie) {
@@ -322,7 +322,7 @@
                 this.showFavBtn = true;
             },
             fromRecom2Watch: function(movie) {
-                console.log(movie);
+                // console.log(movie);
                 this.movie_to_add = movie.id;
                 this.submitToWatch();
                 this.reset();
@@ -341,7 +341,7 @@
                 this.watchedMovieList.splice(index, 1);
                 // this.axios.delete(`http://45.63.27.74:8080/interactions/${movie.interact_id}`)
                 this.axios.delete(`${this.API}/interactions/${movie.interact_id}`)
-                    .then(res=> {
+                    .then(() => {
                         // this.axios.get('http://45.63.27.74:8080/recommendations?limit=20'
                         this.axios.get(this.API + '/recommendations?limit=20'
                         ).then((response) => {
@@ -380,11 +380,11 @@
                     });
             },
             delete2WatchMovie: function(movie, index) {
-                console.log(movie);
+                // console.log(movie);
                 this.toWatchMovieList.splice(index, 1);
                 // this.axios.delete(`http://45.63.27.74:8080/interactions/${movie.interact_id}`)
                 this.axios.delete(`${this.API}/interactions/${movie.interact_id}`)
-                    .then(res=> {
+                    .then(() => {
                         // this.axios.get('http://45.63.27.74:8080/recommendations?limit=20'
                         this.axios.get(this.API + '/recommendations?limit=20'
                         ).then((response) => {
@@ -422,7 +422,7 @@
                         });
                     });
             },
-            search: function(newMovie) {
+            search: function() {
                 // console.log(this.newMovie);
                 this.showSuggestion = true;
                 this.showSelected = false;
@@ -448,7 +448,7 @@
             },
             submitWatched: function() {
                 // console.log('submit', this.newMovie);
-                console.log(this.LikeorNot);
+                // console.log(this.LikeorNot);
                 if (!this.movie_to_add){
                     this.showWarning = true;
                     this.warningMsg = 'Must pick a movie';
@@ -467,7 +467,7 @@
                     hasLiked: this.LikeorNot,
                     hasWatched: true
                 }).then(res => {
-                    console.log(res);
+                    // console.log(res);
                     if (res.request.status === 200) {
                         this.showWarning = true;
                         this.warningMsg = 'This movie has been added';
@@ -492,6 +492,7 @@
                     this.axios.get(this.API + '/recommendations?limit=20'
                     // this.axios.get('http://45.63.27.74:8080/recommendations?limit=20'
                     ).then((response) => {
+                        console.log(response);
                         let movies = response.data.movies;
                         this.recommendedList = [];
                         for (let movie of movies) {
@@ -529,7 +530,7 @@
                     this.showWarning = true;
                     this.warningMsg = 'Must pick a movie';
                 }
-                console.log(`user: ${this.user_id}, movie: ${this.movie_to_add}`);
+                // console.log(`user: ${this.user_id}, movie: ${this.movie_to_add}`);
                 // this.axios.post('http://45.63.27.74:8080/interactions', {
                 this.axios.post(this.API + '/interactions', {
                     user: this.user_id,
@@ -604,7 +605,7 @@
                 this.axios.put(`${this.API}/interactions/${movie.interact_id}`, {
                     hasLiked: true
                 })
-                    .then(res=> {
+                    .then(() => {
                         // this.axios.get('http://45.63.27.74:8080/recommendations?limit=20'
                         this.axios.get(this.API + '/recommendations?limit=20'
                         ).then((response) => {
@@ -643,7 +644,7 @@
                 this.axios.put(`${this.API}/interactions/${movie.interact_id}`, {
                     hasLiked: false
                 })
-                    .then(res=> {
+                    .then(() => {
                     // this.axios.get('http://45.63.27.74:8080/recommendations?limit=20'
                         this.axios.get(this.API + '/recommendations?limit=20'
                         ).then((response) => {
@@ -789,7 +790,7 @@
         display: flex;
         flex-wrap: nowrap;
         min-width: 100%;
-        /*min-height: 350px;*/
+        min-height: 350px;
         /*overflow-x: auto;*/
         overflow-x: scroll;
 
