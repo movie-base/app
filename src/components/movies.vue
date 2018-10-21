@@ -192,6 +192,12 @@
                     console.log(response.data);
                     for (let record of response.data) {
                         let element = {};
+                        if (!record.movie) {
+                            continue;
+                        }
+                        if (record.movie.hasWatched && record.movie.wantToWatch) {
+                            continue;
+                        }
                         if (record.movie.poster) {
                             element.interact_id = record.id;
                             element.movie_id = record.movie._id;
