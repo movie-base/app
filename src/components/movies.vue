@@ -187,7 +187,7 @@
                     return Promise.reject(error);
                 });
             // this.axios.get('http://45.63.27.74:8080/interactions')
-            this.axios.get(this.API + '/interactions?sort=-updatedAt')
+            this.axios.get(this.API + '/interactions?sort=-updatedAt&limit=100')
                 .then((response) => {
                     console.log(response.data);
                     for (let record of response.data) {
@@ -401,7 +401,7 @@
                         element.movie_id = res.data.movie._id;
                         element.title = res.data.movie.title;
                         element.poster = res.data.movie.poster;
-                        this.watchedMovieList.push(element);
+                        this.watchedMovieList.unshift(element);
                     }
 
                     this.axios.get(this.API + '/recommendations?limit=20'
@@ -442,7 +442,7 @@
                     wantToWatch: true
                 })
                     .then(res => {
-                        console.log(res)
+                        console.log(res);
                         if (res.request.status === 200) {
                             this.showWarning = true;
                             this.warningMsg = 'This movie has been added';
@@ -452,7 +452,7 @@
                             element.movie_id = res.data.movie._id;
                             element.title = res.data.movie.title;
                             element.poster = res.data.movie.poster;
-                            this.toWatchMovieList.push(element);
+                            this.toWatchMovieList.unshift(element);
                         }
                         // this.axios.get('http://45.63.27.74:8080/recommendations?limit=20'
                         this.axios.get(this.API + '/recommendations?limit=20'
