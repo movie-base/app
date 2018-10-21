@@ -128,6 +128,7 @@
         name: "movies",
         data() {
             return {
+                API: 'http://45.63.27.74:8080',
                 watchedPopup: false,
                 toWatchPopup: false,
                 recommendPopup: false,
@@ -162,6 +163,7 @@
             }
         },
         created: function() {
+            // console.log(this.API + '/interactions');
             this.token = localStorage.getItem('user-token');
             this.user_id = localStorage.getItem('user-id');
             // console.log(this.token);
@@ -184,7 +186,8 @@
                     // console.log(error);
                     return Promise.reject(error);
                 });
-            this.axios.get('http://45.63.27.74:8080/interactions')
+            // this.axios.get('http://45.63.27.74:8080/interactions')
+            this.axios.get(this.API + '/interactions')
                 .then((response) => {
                     console.log(response.data);
                     for (let record of response.data) {
@@ -209,7 +212,8 @@
                     }
                 });
             // console.log(this.watchedMovieList)
-            this.axios.get('http://45.63.27.74:8080/recommendations?limit=20'
+            // this.axios.get('http://45.63.27.74:8080/recommendations?limit=20'
+            this.axios.get(this.API + '/recommendations?limit=20'
             ).then((response) => {
                 let movies = response.data.movies;
                 // console.log(response.data.movies);
@@ -285,9 +289,11 @@
             },
             deleteWatchedMovie: function(movie, index) {
                 this.watchedMovieList.splice(index, 1);
-                this.axios.delete(`http://45.63.27.74:8080/interactions/${movie.interact_id}`)
+                // this.axios.delete(`http://45.63.27.74:8080/interactions/${movie.interact_id}`)
+                this.axios.delete(`${this.API}/interactions/${movie.interact_id}`)
                     .then(res=> {
-                        this.axios.get('http://45.63.27.74:8080/recommendations?limit=20'
+                        // this.axios.get('http://45.63.27.74:8080/recommendations?limit=20'
+                        this.axios.get(this.API + '/recommendations?limit=20'
                         ).then((response) => {
                             let movies = response.data.movies;
                             this.recommendedList = [];
@@ -311,9 +317,11 @@
             delete2WatchMovie: function(movie, index) {
                 console.log(movie);
                 this.toWatchMovieList.splice(index, 1);
-                this.axios.delete(`http://45.63.27.74:8080/interactions/${movie.interact_id}`)
+                // this.axios.delete(`http://45.63.27.74:8080/interactions/${movie.interact_id}`)
+                this.axios.delete(`${this.API}/interactions/${movie.interact_id}`)
                     .then(res=> {
-                        this.axios.get('http://45.63.27.74:8080/recommendations?limit=20'
+                        // this.axios.get('http://45.63.27.74:8080/recommendations?limit=20'
+                        this.axios.get(this.API + '/recommendations?limit=20'
                         ).then((response) => {
                             let movies = response.data.movies;
                             this.recommendedList = [];
@@ -339,7 +347,8 @@
                 this.showSuggestion = true;
                 this.showSelected = false;
                 this.showWarning = false;
-                this.axios.get(`http://45.63.27.74:8080/movies?q=${this.newMovie}&fields=title,year,plot,poster,actors,directors,imdbRating,languages&limit=5`)
+                // this.axios.get(`http://45.63.27.74:8080/movies?q=${this.newMovie}&fields=title,year,plot,poster,actors,directors,imdbRating,languages&limit=5`)
+                this.axios.get(`${this.API}/movies?q=${this.newMovie}&fields=title,year,plot,poster,actors,directors,imdbRating,languages&limit=5`)
                     .then(res => {
                         // console.log(res);
                         this.watchedSuggestion = [];
@@ -366,7 +375,8 @@
                     this.warningMsg = 'Please choose like or not';
                     return;
                 }
-                this.axios.post('http://45.63.27.74:8080/interactions', {
+                // this.axios.post('http://45.63.27.74:8080/interactions', {
+                this.axios.post(this.API + '/interactions', {
                     user: this.user_id,
                     // movie: newMovie.movie_id,
                     // hasLiked: true,
@@ -388,7 +398,8 @@
                         this.watchedMovieList.push(element);
                     }
 
-                    this.axios.get('http://45.63.27.74:8080/recommendations?limit=20'
+                    this.axios.get(this.API + '/recommendations?limit=20'
+                    // this.axios.get('http://45.63.27.74:8080/recommendations?limit=20'
                     ).then((response) => {
                         let movies = response.data.movies;
                         this.recommendedList = [];
@@ -418,7 +429,8 @@
                     this.warningMsg = 'Must pick a movie';
                 }
                 console.log(`user: ${this.user_id}, movie: ${this.movie_to_add}`);
-                this.axios.post('http://45.63.27.74:8080/interactions', {
+                // this.axios.post('http://45.63.27.74:8080/interactions', {
+                this.axios.post(this.API + '/interactions', {
                     user: this.user_id,
                     movie: this.movie_to_add,
                     wantToWatch: true
@@ -436,7 +448,8 @@
                             element.poster = res.data.movie.poster;
                             this.toWatchMovieList.push(element);
                         }
-                        this.axios.get('http://45.63.27.74:8080/recommendations?limit=20'
+                        // this.axios.get('http://45.63.27.74:8080/recommendations?limit=20'
+                        this.axios.get(this.API + '/recommendations?limit=20'
                         ).then((response) => {
                             let movies = response.data.movies;
                             this.recommendedList = [];
@@ -470,11 +483,13 @@
             like: function(movie) {
                 // console.log('like', movie.title);
                 movie.like = true;
-                this.axios.put(`http://45.63.27.74:8080/interactions/${movie.interact_id}`, {
+                // this.axios.put(`http://45.63.27.74:8080/interactions/${movie.interact_id}`, {
+                this.axios.put(`${this.API}/interactions/${movie.interact_id}`, {
                     hasLiked: true
                 })
                     .then(res=> {
-                        this.axios.get('http://45.63.27.74:8080/recommendations?limit=20'
+                        // this.axios.get('http://45.63.27.74:8080/recommendations?limit=20'
+                        this.axios.get(this.API + '/recommendations?limit=20'
                         ).then((response) => {
                             let movies = response.data.movies;
                             this.recommendedList = [];
@@ -498,12 +513,14 @@
             dislike: function(movie) {
                 // console.log('dislike', movie.title);
                 movie.like = false;
-                this.axios.put(`http://45.63.27.74:8080/interactions/${movie.interact_id}`, {
+                // this.axios.put(`http://45.63.27.74:8080/interactions/${movie.interact_id}`, {
+                this.axios.put(`${this.API}/interactions/${movie.interact_id}`, {
                     hasLiked: false
                 })
                     .then(res=> {
-                    this.axios.get('http://45.63.27.74:8080/recommendations?limit=20'
-                    ).then((response) => {
+                    // this.axios.get('http://45.63.27.74:8080/recommendations?limit=20'
+                        this.axios.get(this.API + '/recommendations?limit=20'
+                        ).then((response) => {
                         let movies = response.data.movies;
                         this.recommendedList = [];
                         for (let movie of movies) {
