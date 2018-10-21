@@ -222,7 +222,6 @@
             this.axios.get(this.API + '/recommendations?limit=20'
             ).then((response) => {
                 let movies = response.data.movies;
-                // console.log(response.data.movies);
                 // let recommendedList = [];
                 this.recommendedList = [];
                 // this.toWatchMovieList = [];
@@ -230,6 +229,9 @@
                 // let cnt = 0
                 for (let movie of movies) {
                     let element = {};
+                    if (!movie) {
+                        continue;
+                    }
                     // cnt++;
                     if (!movie.title || !movie.poster){
                         continue;
@@ -305,6 +307,9 @@
                             this.recommendedList = [];
                             for (let movie of movies) {
                                 let element = {};
+                                if(!movie) {
+                                    continue;
+                                }
                                 // cnt++;
                                 if (!movie.title || !movie.poster){
                                     continue;
@@ -333,7 +338,9 @@
                             this.recommendedList = [];
                             for (let movie of movies) {
                                 let element = {};
-                                // cnt++;
+                                if(!movie) {
+                                    continue;
+                                }
                                 if (!movie.title || !movie.poster){
                                     continue;
                                 }
@@ -411,6 +418,9 @@
                         this.recommendedList = [];
                         for (let movie of movies) {
                             let element = {};
+                            if (!movie) {
+                                continue;
+                            }
                             // cnt++;
                             if (!movie.title || !movie.poster){
                                 continue;
@@ -461,7 +471,9 @@
                             this.recommendedList = [];
                             for (let movie of movies) {
                                 let element = {};
-                                // cnt++;
+                                if(!movie) {
+                                    continue;
+                                }
                                 if (!movie.title || !movie.poster){
                                     continue;
                                 }
@@ -501,7 +513,9 @@
                             this.recommendedList = [];
                             for (let movie of movies) {
                                 let element = {};
-                                // cnt++;
+                                if(!movie) {
+                                    continue;
+                                }
                                 if (!movie.title || !movie.poster){
                                     continue;
                                 }
@@ -531,7 +545,9 @@
                         this.recommendedList = [];
                         for (let movie of movies) {
                             let element = {};
-                            // cnt++;
+                            if(!movie) {
+                                continue;
+                            }
                             if (!movie.title || !movie.poster){
                                 continue;
                             }
