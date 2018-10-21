@@ -44,14 +44,14 @@
                 this.showLogin = false;
             },
             login: function(username, passwd){
-                if (!username) {
-                    // username = "admin@moviebase.local";
-                    username = "bilibili@biu.com";
-                }
-                if (!passwd) {
-                    // passwd = "moviebase";
-                    passwd = "1234Qwer%";
-                }
+                // if (!username) {
+                //     // username = "admin@moviebase.local";
+                //     username = "bilibili@biu.com";
+                // }
+                // if (!passwd) {
+                //     // passwd = "moviebase";
+                //     passwd = "1234Qwer%";
+                // }
                 this.axios.post('http://45.63.27.74:8080/auth', {
                     // "email": "admin@moviebase.local",
                     // "password": "moviebase"
