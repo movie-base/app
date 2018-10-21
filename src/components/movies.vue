@@ -103,7 +103,8 @@
             <div class="popup scrollbar-cyan thin">
                 <p>{{recommendMovie.title}} ({{recommendMovie.year}})  {{recommendMovie.runtime}} <i class="material-icons">
                     stars
-                </i>{{recommendMovie.imdbRating}}</p>
+                </i>{{recommendMovie.imdbRating}} <button class="btn btn-primary last-btn" @click="fromRecom2Watch(recommendMovie)" v-if="showFavBtn">Add to Watch</button></p>
+
                 <img :src="recommendMovie.poster">
                 <div class="detailed_context">
                 <p class="detailed_plot">{{recommendMovie.plot}}</p>
@@ -118,9 +119,9 @@
 
         <p class="title">Recommended Movie</p>
         <div class="card-deck ">
-            <div v-for="movie in recommendedList" class="card resize cover-parent" @click="showDescrip(movie)" >
+            <div v-for="movie in recommendedList" class="card resize cover-parent" @click="showRecommend(movie)" >
                 <!--<p v-if="movie.descrip" class="cover">{{movie.plot}}</p>-->
-                <img class="card-img-top" style="" v-bind:src="movie.poster" >
+                <img class="card-img-top" v-bind:src="movie.poster" >
                 <div class="'card-body">
                     <p class="card-text">{{movie.title}}</p>
                 </div>
@@ -144,7 +145,6 @@
                 recommendMovie: {},
                 token: '',
                 user_id: '',
-                // movie_id: '',
                 movieDetail: '',
                 newMovie: '',
                 movie_to_add: '',
@@ -153,6 +153,7 @@
                 showWarning: false,
                 warningMsg: false,
                 showSelected: false,
+                showFavBtn : false,
                 watchedMovieList: [
                     // {name: 'Safe', image: 'https://images-na.ssl-images-amazon.com/images/M/MV5BODliOWEzMTUtZDQ5ZS00ZTBmLTgzNzEtMGVkOTlhYWNkYjE2XkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_UX182_CR0,0,182,268_AL_.jpg'},
                     // {name: 'Desperado', image: 'https://images-na.ssl-images-amazon.com/images/M/MV5BYjA0NDMyYTgtMDgxOC00NGE0LWJkOTQtNDRjMjEzZmU0ZTQ3XkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_UX182_CR0,0,182,268_AL_.jpg'}
@@ -254,6 +255,7 @@
                     if (!movie.title || !movie.poster){
                         continue;
                     }
+                    element.id = movie._id;
                     element.title = movie.title;
                     element.poster = movie.poster;
                     element.plot = movie.plot;
@@ -300,6 +302,7 @@
                 this.showSelected = false;
                 this.LikeorNot = null;
                 this.recommendPopup = false;
+                this.showFavBtn = false;
             },
             showDescrip: function(movie) {
                 // console.log(movieDetail.plot)
@@ -310,6 +313,16 @@
                 // this.recommendMovie.title = movie.title;
                 // this.recommendMovie.plot = movie.plot;
                 // this.recommendMovie.poster = movie.poster;
+            },
+            showRecommend: function(movie) {
+                this.showDescrip(movie);
+                this.showFavBtn = true;
+            },
+            fromRecom2Watch: function(movie) {
+                console.log(movie);
+                this.movie_to_add = movie.id;
+                this.submitToWatch();
+                this.reset();
             },
             // hideDescrip: function(movie) {
             //     movie.descrip = false;
@@ -344,6 +357,7 @@
                                 if (!movie.title || !movie.poster){
                                     continue;
                                 }
+                                element.id = movie._id;
                                 element.title = movie.title;
                                 element.poster = movie.poster;
                                 element.plot = movie.plot;
@@ -386,6 +400,7 @@
                                 if (!movie.title || !movie.poster){
                                     continue;
                                 }
+                                element.id = movie._id;
                                 element.title = movie.title;
                                 element.poster = movie.poster;
                                 element.plot = movie.plot;
@@ -428,7 +443,7 @@
                         }
                     })
             },
-            submitWatched: function(newMovie) {
+            submitWatched: function() {
                 // console.log('submit', this.newMovie);
                 console.log(this.LikeorNot);
                 if (!this.movie_to_add){
@@ -485,6 +500,7 @@
                             if (!movie.title || !movie.poster){
                                 continue;
                             }
+                            element.id = movie._id;
                             element.title = movie.title;
                             element.poster = movie.poster;
                             element.plot = movie.plot;
@@ -503,7 +519,7 @@
                 });
                 this.reset();
             },
-            submitToWatch: function(newMovie) {
+            submitToWatch: function() {
                 // console.log('enter', this.newMovie);
                 this.showSuggestion = false;
                 if (!this.movie_to_add){
@@ -518,7 +534,7 @@
                     wantToWatch: true
                 })
                     .then(res => {
-                        console.log(res);
+                        // console.log(res);
                         if (res.request.status === 200) {
                             this.showWarning = true;
                             this.warningMsg = 'This movie has been added';
@@ -550,6 +566,7 @@
                                 if (!movie.title || !movie.poster){
                                     continue;
                                 }
+                                element.id = movie._id;
                                 element.title = movie.title;
                                 element.poster = movie.poster;
                                 element.plot = movie.plot;
@@ -598,6 +615,7 @@
                                 if (!movie.title || !movie.poster){
                                     continue;
                                 }
+                                element.id = movie._id;
                                 element.title = movie.title;
                                 element.poster = movie.poster;
                                 element.plot = movie.plot;
@@ -636,6 +654,7 @@
                             if (!movie.title || !movie.poster){
                                 continue;
                             }
+                            element.id = movie._id;
                             element.title = movie.title;
                             element.poster = movie.poster;
                             element.plot = movie.plot;
@@ -710,7 +729,6 @@
         opacity: 0.8;
         z-index: 100;
 
-
     }
     .popup {
         position: fixed;
@@ -728,6 +746,9 @@
 
         overflow-y: scroll;
         max-height: 600px;
+    }
+    .last-btn {
+        float: right;
     }
 
     .scrollbar-cyan::-webkit-scrollbar-track {
