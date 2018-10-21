@@ -41,7 +41,7 @@
                 <button class="btn btn-danger floating" v-if="movie.icon" @click="deleteWatchedMovie(movie, index)"><i class="material-icons">
                     clear
                 </i></button>
-                <img class="card-img-top" style="" v-bind:src="movie.poster" >
+                <img class="card-img-top" @click="showDescrip(movie)" v-bind:src="movie.poster" >
                 <div class="'card-body">
                     <p class="card-text">{{movie.title}}</p>
                     <div class="btn-group sticky-bottom" role="group" aria-label="Basic example">
@@ -77,7 +77,7 @@
                         <div class="rating">{{selectedMovie.imdbRating}}</div>
                     </div>
                     <p>{{selectedMovie.plot}}</p>
-                    <p>Actors: <span v-for="actor in selectedMovie.actors">{{actor}}  </span></p>
+                    <p><b>Actors: </b><span v-for="actor in selectedMovie.actors">{{actor}}  </span></p>
                     <img :src="selectedMovie.poster">
                 </div>
                 <p v-if="showWarning" class="error">{{warningMsg}}</p>
@@ -91,7 +91,7 @@
                 <button class="btn btn-danger floating" v-if="movie.icon" @click="delete2WatchMovie(movie, index)"><i class="material-icons">
                     clear
                 </i></button>
-                <img class="card-img-top" style="" v-bind:src="movie.poster" >
+                <img class="card-img-top" @click="showDescrip(movie)" v-bind:src="movie.poster" >
                 <div class="'card-body">
                     <p class="card-text">{{movie.title}}</p>
                 </div>
@@ -101,8 +101,14 @@
         <div v-if="recommendPopup">
             <div class="popup-background" @click="reset()"></div>
             <div class="popup scrollbar-cyan thin">
-                <p>{{recommendMovie.title}}</p>
-                <p>{{recommendMovie.plot}}</p>
+                <p>{{recommendMovie.title}} ({{recommendMovie.year}})  {{recommendMovie.imdbRating}}</p>
+                <div class="detailed_context">
+                <p class="detailed_plot">{{recommendMovie.plot}}</p>
+                <p v-if="recommendMovie.genres"><b>Genres: </b><span v-for="genre in recommendMovie.genres">{{genre}},  </span></p>
+                <p v-if="recommendMovie.directors"><b>Directors: </b><span v-for="director in recommendMovie.directors">{{director}},  </span></p>
+                <p v-if="recommendMovie.actors"><b>Actors: </b><span v-for="actor in recommendMovie.actors">{{actor}},  </span></p>
+                <p v-if="recommendMovie.languages"><b>Languages: </b><span v-for="language in recommendMovie.languages">{{language}},  </span></p>
+                </div>
                 <img :src="recommendMovie.poster">
             </div>
         </div>
@@ -202,7 +208,15 @@
                             element.interact_id = record.id;
                             element.movie_id = record.movie._id;
                             element.title = record.movie.title;
+                            element.plot = record.movie.plot;
                             element.poster = record.movie.poster;
+                            element.genres = record.movie.genres;
+                            element.actors = record.movie.actors;
+                            element.directors = record.movie.directors;
+                            element.languages = record.movie.languages;
+                            element.year = record.movie.year;
+                            element.imdbRating = record.movie.imdbRating;
+
                             element.icon = false;
                             element.like = record.hasLiked;
                         }
@@ -240,6 +254,12 @@
                     element.poster = movie.poster;
                     element.plot = movie.plot;
                     element.genres = movie.genres;
+                    element.actors = movie.actors;
+                    element.directors = movie.directors;
+                    element.languages = movie.languages;
+                    element.year = movie.year;
+                    element.imdbRating = movie.imdbRating;
+
                     element.descrip = false;
                     // element.icon = false;
                     this.recommendedList.push(element);
@@ -281,9 +301,10 @@
                 // console.log('hover');
                 // movie.descrip = true;
                 this.recommendPopup = true;
-                this.recommendMovie.title = movie.title;
-                this.recommendMovie.plot = movie.plot;
-                this.recommendMovie.poster = movie.poster;
+                this.recommendMovie = movie;
+                // this.recommendMovie.title = movie.title;
+                // this.recommendMovie.plot = movie.plot;
+                // this.recommendMovie.poster = movie.poster;
             },
             // hideDescrip: function(movie) {
             //     movie.descrip = false;
@@ -371,6 +392,9 @@
                         }
                         // console.log(res.data[0]);
                         for (let movie of res.data) {
+                            if (!movie.poster) {
+                                continue;
+                            }
                             // this.watchedSuggestion.push({id: movie.id, title: movie.title, year: movie.year});
                             this.watchedSuggestion.push(movie);
                         }
@@ -406,6 +430,7 @@
                         // element.interact_id = record.id;
                         element.interact_id = res.data._id;
                         element.movie_id = res.data.movie._id;
+                        element.plot = res.data.movie.plot;
                         element.title = res.data.movie.title;
                         element.poster = res.data.movie.poster;
                         this.watchedMovieList.unshift(element);
@@ -460,6 +485,7 @@
                             let element = {};
                             element.interact_id = res.data._id;
                             element.movie_id = res.data.movie._id;
+                            element.plot = res.data.movie.plot;
                             element.title = res.data.movie.title;
                             element.poster = res.data.movie.poster;
                             this.toWatchMovieList.unshift(element);
@@ -636,7 +662,7 @@
         z-index: 101;
 
         overflow-y: scroll;
-        max-height: 500px;
+        max-height: 600px;
     }
 
     .scrollbar-cyan::-webkit-scrollbar-track {
@@ -666,25 +692,27 @@
     .selected {
         font-size: 12px;
     }
+    .detailed_context {
+        text-align: left;
+    }
 
     .card-deck {
         display: flex;
-        /* flex-direction: row; */
         flex-wrap: nowrap;
         min-width: 100%;
-        min-height: 350px;
-        overflow-x: auto;
-        /* overflow-y: hidden; */
+        /*min-height: 350px;*/
+        /*overflow-x: auto;*/
+        overflow-x: scroll;
+
     }
     .card {
         display: inline-block;
         flex-grow: 0;
         margin: 5px;
         min-width: 200px;
-        /*max-height: 400px;*/
         max-width: 200px;
     }
-    .card::-webkit-scrollbar {
-        display: none;
-    }
+    /*.card::-webkit-scrollbar {*/
+        /*display: none;*/
+    /*}*/
 </style>
