@@ -101,9 +101,12 @@
         <div v-if="recommendPopup">
             <div class="popup-background" @click="reset()"></div>
             <div class="popup scrollbar-cyan thin">
-                <p>{{recommendMovie.title}} ({{recommendMovie.year}})  {{recommendMovie.runtime}} <i class="material-icons">
+                <p>{{recommendMovie.title}} ({{recommendMovie.year}})</p>
+                <p>{{recommendMovie.runtime}} <i class="material-icons">
                     stars
-                </i>{{recommendMovie.imdbRating}} <button class="btn btn-primary last-btn" @click="fromRecom2Watch(recommendMovie)" v-if="showFavBtn">Add to Watch</button></p>
+                </i>{{recommendMovie.imdbRating}}
+                    <button class="btn btn-primary last-btn" @click="fromRecom2Watch(recommendMovie)" v-if="showFavBtn">Add to Watch</button>
+                </p>
 
                 <img :src="recommendMovie.poster">
                 <div class="detailed_context">
@@ -138,7 +141,7 @@
         name: "movies",
         data() {
             return {
-                API: 'http://45.63.27.74:8080',
+                API: 'http://45.63.27.74:8080',         // change API address if you have to
                 watchedPopup: false,
                 toWatchPopup: false,
                 recommendPopup: false,
