@@ -13,9 +13,12 @@
                     </div>
                 </div>
                 <div class="prompt" v-if="showSuggestion">
+                    <hr>
                     <p class="choice" v-for="movie in watchedSuggestion" @click="select(movie)">{{movie.title}} ({{movie.year}})</p>
+                    <hr>
                 </div>
                 <div class="selected scrollbar-cyan thin" v-if="showSelected">
+                    <hr>
                     <div class="selectedTitle">
                         <h5>{{selectedMovie.title}}</h5>
                         <button type="button" class="btn btn-success" :class="{ disabled: LikeorNot }" @click="clickLike()"><i class="material-icons">
@@ -26,9 +29,9 @@
                         </i></button>
                         <div class="rating">{{selectedMovie.imdbRating}}</div>
                     </div>
-                    <p>{{selectedMovie.plot}}</p>
-                    <p>Actors: <span v-for="actor in selectedMovie.actors">{{actor}}  </span></p>
                     <img :src="selectedMovie.poster">
+                    <p>{{selectedMovie.plot}}</p>
+                    <p><b>Actors: </b>{{selectedMovie.actors.join(', ')}}</p>
                 </div>
                 <p v-if="showWarning" class="error">{{warningMsg}}</p>
                 <!--<button class="btn btn-primary">Submit</button>-->
@@ -69,16 +72,19 @@
                     </div>
                 </div>
                 <div class="prompt" v-if="showSuggestion">
+                    <hr>
                     <p class="choice" v-for="movie in watchedSuggestion" @click="select(movie)">{{movie.title}} ({{movie.year}})</p>
+                    <hr>
                 </div>
                 <div class="selected scrollbar-cyan thin" v-if="showSelected">
+                    <hr>
                     <div class="selectedTitle">
                         <h5>{{selectedMovie.title}}</h5>
                         <div class="rating">{{selectedMovie.imdbRating}}</div>
                     </div>
-                    <p>{{selectedMovie.plot}}</p>
-                    <p><b>Actors: </b><span v-for="actor in selectedMovie.actors">{{actor}}  </span></p>
                     <img :src="selectedMovie.poster">
+                    <p>{{selectedMovie.plot}}</p>
+                    <p><b>Actors: </b>{{selectedMovie.actors.join(', ')}}</p>
                 </div>
                 <p v-if="showWarning" class="error">{{warningMsg}}</p>
                 <!--<button class="btn btn-primary">Submit</button>-->
@@ -101,20 +107,21 @@
         <div v-if="recommendPopup">
             <div class="popup-background" @click="reset()"></div>
             <div class="popup scrollbar-cyan thin">
-                <p>{{recommendMovie.title}} ({{recommendMovie.year}})</p>
-                <p>{{recommendMovie.runtime}} <i class="material-icons">
-                    stars
-                </i>{{recommendMovie.imdbRating}}
-                    <button class="btn btn-primary last-btn" @click="fromRecom2Watch(recommendMovie)" v-if="showFavBtn">Add to Watch</button>
+                <div v-if="showFavBtn">
+                <button class="btn btn-primary last-btn" @click="fromRecom2Watch(recommendMovie)">Add to Watch</button><br>
+                </div>
+                <p>
+                <h3>{{recommendMovie.title}} ({{recommendMovie.year}})</h3>
                 </p>
-
                 <img :src="recommendMovie.poster">
-                <div class="detailed_context">
+                <div class="detailed_context"><br>
                 <p class="detailed_plot">{{recommendMovie.plot}}</p>
                 <p v-if="recommendMovie.genres"><b>Genres: </b>{{recommendMovie.genres.join(', ')}}</p>
                 <p v-if="recommendMovie.directors"><b>Directors: </b>{{recommendMovie.directors.join(', ')}}</p>
                 <p v-if="recommendMovie.actors"><b>Actors: </b>{{recommendMovie.actors.join(', ')}}</p>
                 <p v-if="recommendMovie.languages"><b>Languages: </b>{{recommendMovie.languages.join(', ')}}</p>
+                <p v-if="recommendMovie.runtime"><b>Runtime: </b>{{recommendMovie.runtime}}</p>
+                <p v-if="recommendMovie.imdbRating"><b>IMDB Rating: </b> {{recommendMovie.imdbRating}}</p>
                 </div>
 
             </div>
