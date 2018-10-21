@@ -187,7 +187,7 @@
                     return Promise.reject(error);
                 });
             // this.axios.get('http://45.63.27.74:8080/interactions')
-            this.axios.get(this.API + '/interactions')
+            this.axios.get(this.API + '/interactions?sort=-updatedAt')
                 .then((response) => {
                     console.log(response.data);
                     for (let record of response.data) {
@@ -195,10 +195,10 @@
                         if (!record.movie) {
                             continue;
                         }
-                        if (record.movie.hasWatched && record.movie.wantToWatch) {
+                        if (record.hasWatched && record.wantToWatch) {
                             continue;
                         }
-                        if (record.movie.poster) {
+                        if (record.movie && record.movie.poster) {
                             element.interact_id = record.id;
                             element.movie_id = record.movie._id;
                             element.title = record.movie.title;
@@ -207,11 +207,11 @@
                             element.like = record.hasLiked;
                         }
                         // console.log(element);
-                        if (record.hasWatched && record.movie.poster) {
+                        if (record.hasWatched && record.movie && record.movie.poster) {
                             // console.log(element);
                             this.watchedMovieList.push(element);
                         }
-                        if (record.wantToWatch && record.movie.poster) {
+                        if (record.wantToWatch && record.movie && record.movie.poster) {
                             // console.log(record);
                             this.toWatchMovieList.push(element)
                         }
